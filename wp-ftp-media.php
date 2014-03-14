@@ -45,16 +45,6 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 
 	/**
-	 * If uploads is stored like /uploads/year/month
-	 * Remove and use only /uploads/
-	 */
-
-	if( $upload_yrm ) {
-		update_option( 'uploads_use_yearmonth_folders', '' );
-	}
-
-
-	/**
 	 * Host-connection
 	 * Read about it here: http://php.net/manual/en/function.ftp-connect.php
 	 */
