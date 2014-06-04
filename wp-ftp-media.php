@@ -27,6 +27,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 	$settings = array(
 		'host'	  =>	'ip or hostname',  			// * the ftp-server hostname
+		'port'    =>    21,                                 // * the ftp-server port (of type int)
 		'user'	  =>	'username', 				// * ftp-user
 		'pass'	  =>	'password',	 				// * ftp-password
 		'cdn'     =>    'cdn.example.com',			// * This have to be a pointed domain or subdomain to the root of the uploads
@@ -59,7 +60,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 	 * Read about it here: http://php.net/manual/en/function.ftp-connect.php
 	 */
 	
-	$connection = ftp_connect( $settings['host'] );
+	$connection = ftp_connect( $settings['host'], $settings['port'] );
 
 
 	/**
