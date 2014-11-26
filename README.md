@@ -1,1 +1,1 @@
-**just proof of concept to anser question on wpse**
+**just proof of concept to answer question on wpse**
