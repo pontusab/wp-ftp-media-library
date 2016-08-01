@@ -46,16 +46,6 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 
 	/**
-	 * If uploads is stored like /uploads/year/month
-	 * Remove and use only /uploads/
-	 */
-
-	if( $upload_yrm ) {
-		update_option( 'uploads_use_yearmonth_folders', '' );
-	}
-
-
-	/**
 	 * Host-connection
 	 * Read about it here: http://php.net/manual/en/function.ftp-connect.php
 	 */
@@ -80,32 +70,37 @@ function wpse_74180_upload_to_ftp( $args ) {
 	}
 
 
-	/**
-	 * Get all files in uploads - local
-	 * Remove hidden-files... mabye better solution 
-	 * http://php.net/manual/en/function.scandir.php
-	 */
-	
-	$files = preg_grep('/^([^.])/', scandir( $settings['base'] ) );
-
-
-	// Cycle through all source files
-	foreach ( $files as $file ) {
-
-		/**
-		 * If we ftp-upload successfully, mark it for deletion
-		 * http://php.net/manual/en/function.ftp-put.php
-		 */
-
-		if( ftp_put( $connection, $settings['path'] . "/" . $file, $settings['base'] . "/" . $file, FTP_BINARY ) ) {
-			$delete[] = $file;
-		} 
+	function ftp_putAll($conn_id, $src_dir, $dst_dir, $created) {
+    $d = dir($src_dir);
+	    while($file = $d->read()) { // do this for each file in the directory
+	        if ($file != "." && $file != "..") { // to prevent an infinite loop
+	            if (is_dir($src_dir."/".$file)) { // do the following if it is a directory
+	                if (!@ftp_chdir($conn_id, $dst_dir."/".$file)) {
+	                    ftp_mkdir($conn_id, $dst_dir."/".$file); // create directories that do not yet exist
+	                }
+	                $created  = ftp_putAll($conn_id, $src_dir."/".$file, $dst_dir."/".$file, $created); // recursive part
+	            } else {
+	                $upload = ftp_put($conn_id, $dst_dir."/".$file, $src_dir."/".$file, FTP_BINARY); // put the files
+	                if($upload)
+	                	$created[] = $src_dir."/".$file;
+	            }
+	        }
+	    }
+	    $d->close();
+	    return $created;
 	}
+
+	/**
+	 * If we ftp-upload successfully, mark it for deletion
+	 * http://php.net/manual/en/function.ftp-put.php
+	 */
+	$delete = ftp_putAll($connection, $settings['base'], $settings['path'], array());
+	
 
 
 	// Delete all successfully-copied files
 	foreach ( $delete as $file ) {
-		unlink( $settings['base'] . '/' . $file );
+		unlink( $file );
 	}
 }
 add_filter( 'wp_generate_attachment_metadata', 'wpse_74180_upload_to_ftp' );
