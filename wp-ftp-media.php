@@ -71,7 +71,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 
 	function ftp_putAll($conn_id, $src_dir, $dst_dir, $created) {
-    $d = dir($src_dir);
+            $d = dir($src_dir);
 	    while($file = $d->read()) { // do this for each file in the directory
 	        if ($file != "." && $file != "..") { // to prevent an infinite loop
 	            if (is_dir($src_dir."/".$file)) { // do the following if it is a directory
@@ -102,5 +102,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 	foreach ( $delete as $file ) {
 		unlink( $file );
 	}
+	
+	return $args;
 }
 add_filter( 'wp_generate_attachment_metadata', 'wpse_74180_upload_to_ftp' );
