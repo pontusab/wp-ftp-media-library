@@ -33,13 +33,13 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 	$settings = array(
 
-		'host'	  =>	SH_UPLOADS_FTP_SERVER_HOSTNAME,     // * the ftp-server hostname, ie:
+		'host'	  =>  SH_UPLOADS_FTP_SERVER_HOSTNAME,     // * the ftp-server hostname, ie:
 		'port'    =>  SH_UPLOADS_FTP_SERVER_PORT,         // * the ftp-server port (of type int), ie: 21
-		'user'	  =>	SH_UPLOADS_FTP_SERVER_USERNAME,     // * ftp-user, ie: 'username'
-		'pass'	  =>	SH_UPLOADS_FTP_SERVER_PASSWORD,	    // * ftp-password, ie: password'
+		'user'	  =>  SH_UPLOADS_FTP_SERVER_USERNAME,     // * ftp-user, ie: 'username'
+		'pass'	  =>  SH_UPLOADS_FTP_SERVER_PASSWORD,	  // * ftp-password, ie: password'
 		'cdn'     =>  SH_UPLOADS_FTP_SERVER_DOMAIN_NAME,  // * domain or subdomain name to the root of the uploads, ie: 'cdn.example.com'
-		'path'	  =>	SH_UPLOADS_FTP_SERVER_FTP_ROOT_PATH,// - ftp-path, default is root ('/'). 
-								                                      //     Change here, and add the dir on the ftp-server,
+		'path'	  =>  SH_UPLOADS_FTP_SERVER_FTP_ROOT_PATH,// - ftp-path, default is root ('/'). 
+								  //     Change here, and add the dir on the ftp-server,
 		'base'	  =>  $upload_dir['basedir']  	          // Basedir on local 
 	);
 
