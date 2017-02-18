@@ -1,18 +1,19 @@
 <?php
 /*
-Plugin Name: Wp-ftp-media-library
+Plugin Name: SH_move_uploads_folder_to_external_server. Fork of Plugin: Wp-ftp-media-library
 Plugin URI: http://wordpress.stackexchange.com/questions/74180/upload-images-to-remote-server
-Description: Let's you upload images to ftp-server and remove the upload on the local machine.
-Version: 0.1
-Author: Pontus Abrahamsson
-Author URI: http://pontusab.se
+Description: Let's you upload images to ftp-server and remove the upload folder from the local machine. 
+Version: 0.2
+Author: Sheryl Hohman: v2 define external server constants in wp-config. forked from orig Author: Pontus Abrahamsson; 
+Author URI: http://pontusab.se (original author)
+
 */
 
 /**
- * @version 0.1
+ * @version 0.2
  */
 
-function wpse_74180_upload_to_ftp( $args ) {
+function sh_move_uploads_folder_to_external_server( $args ) {
 
 	$upload_dir = wp_upload_dir();
 	$upload_url = get_option('upload_url_path');
@@ -20,19 +21,34 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 
 	/**
-	 * Change this to match your server
-	 * You only need to change the those with (*)
+	 * Define these constants in wp-config.php, to match your uploads server
+	 * You only need to set the those with (*)
 	 * If marked with (-) its optional 
 	 */
+	
+	// 170216 SH: Define these constants in wp-config.php for security
+        // EXIT out of this function if any of these constants NOT defined
+	
+	if (!defined(SH_UPLOADS_FTP_SERVER_HOSTNAME) or 
+	   !defined(SH_UPLOADS_FTP_SERVER_PORT) or 
+	   !defined(SH_UPLOADS_FTP_SERVER_USERNAME) or 
+	   !defined(SH_UPLOADS_FTP_SERVER_PASSWORD) or
+	   !defined(SH_UPLOADS_FTP_SERVER_DOMAIN_NAME))
+		exit("constants for external uploads server are undefined");
+	
+	// create default value - this param need not be custom-defined in wp-config
+	defined(SH_UPLOADS_FTP_SERVER_DOMAIN_NAME) or define(SH_UPLOADS_FTP_SERVER_DOMAIN_NAME, '/')
 
 	$settings = array(
-		'host'	  =>	'ip or hostname',  			// * the ftp-server hostname
-		'port'    =>    21,                                 // * the ftp-server port (of type int)
-		'user'	  =>	'username', 				// * ftp-user
-		'pass'	  =>	'password',	 				// * ftp-password
-		'cdn'     =>    'cdn.example.com',			// * This have to be a pointed domain or subdomain to the root of the uploads
-		'path'	  =>	'/',	 					// - ftp-path, default is root (/). Change here and add the dir on the ftp-server,
-		'base'	  =>    $upload_dir['basedir']  	// Basedir on local 
+
+		'host'	  =>  SH_UPLOADS_FTP_SERVER_HOSTNAME,     // * the ftp-server hostname, ie:
+		'port'    =>  SH_UPLOADS_FTP_SERVER_PORT,         // * the ftp-server port (of type int), ie: 21
+		'user'	  =>  SH_UPLOADS_FTP_SERVER_USERNAME,     // * ftp-user, ie: 'username'
+		'pass'	  =>  SH_UPLOADS_FTP_SERVER_PASSWORD,	  // * ftp-password, ie: password'
+		'cdn'     =>  SH_UPLOADS_FTP_SERVER_DOMAIN_NAME,  // * domain or subdomain name to the root of the uploads, ie: 'cdn.example.com'
+		'path'	  =>  SH_UPLOADS_FTP_SERVER_FTP_ROOT_PATH,// - ftp-path, default is root ('/'). 
+								  //     Change here, and add the dir on the ftp-server,
+		'base'	  =>  $upload_dir['basedir']  	          // Basedir on local 
 	);
 
 
@@ -72,15 +88,21 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 	function ftp_putAll($conn_id, $src_dir, $dst_dir, $created) {
             $d = dir($src_dir);
-	    while($file = $d->read()) { // do this for each file in the directory
-	        if ($file != "." && $file != "..") { // to prevent an infinite loop
-	            if (is_dir($src_dir."/".$file)) { // do the following if it is a directory
+	    // for each file in the directory..
+	    while($file = $d->read()) {
+		// prevent an infinite loop
+	        if ($file != "." && $file != "..") {
+		    // if the 'file' it is a directory
+	            if (is_dir($src_dir."/".$file)) { 
 	                if (!@ftp_chdir($conn_id, $dst_dir."/".$file)) {
-	                    ftp_mkdir($conn_id, $dst_dir."/".$file); // create directories that do not yet exist
+			    // create directories that do not yet exist
+	                    ftp_mkdir($conn_id, $dst_dir."/".$file); 
 	                }
-	                $created  = ftp_putAll($conn_id, $src_dir."/".$file, $dst_dir."/".$file, $created); // recursive part
+			// recurse
+	                $created  = ftp_putAll($conn_id, $src_dir."/".$file, $dst_dir."/".$file, $created); 
 	            } else {
-	                $upload = ftp_put($conn_id, $dst_dir."/".$file, $src_dir."/".$file, FTP_BINARY); // put the files
+			// put the files here
+	                $upload = ftp_put($conn_id, $dst_dir."/".$file, $src_dir."/".$file, FTP_BINARY); 
 	                if($upload)
 	                	$created[] = $src_dir."/".$file;
 	            }
@@ -91,7 +113,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 	}
 
 	/**
-	 * If we ftp-upload successfully, mark it for deletion
+	 * If ftp-upload was successfully, mark it for deletion
 	 * http://php.net/manual/en/function.ftp-put.php
 	 */
 	$delete = ftp_putAll($connection, $settings['base'], $settings['path'], array());
@@ -105,4 +127,4 @@ function wpse_74180_upload_to_ftp( $args ) {
 	
 	return $args;
 }
-add_filter( 'wp_generate_attachment_metadata', 'wpse_74180_upload_to_ftp' );
+add_filter( 'wp_generate_attachment_metadata', 'sh_move_uploads_folder_to_external_server' );
