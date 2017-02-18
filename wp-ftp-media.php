@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Wp-ftp-media-library--SH-fork
+Plugin Name: SH_move_uploads_folder_to_external_server. Fork of Plugin: Wp-ftp-media-library
 Plugin URI: http://wordpress.stackexchange.com/questions/74180/upload-images-to-remote-server
-Description: Let's you upload images to ftp-server and remove the upload folder from the local machine.
+Description: Let's you upload images to ftp-server and remove the upload folder from the local machine. 
 Version: 0.2
 Author: Sheryl Hohman: v2 define external server constants in wp-config. forked from orig Author: Pontus Abrahamsson; 
 Author URI: http://pontusab.se (original author)
