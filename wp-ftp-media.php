@@ -28,7 +28,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 	// 170216 SH: Define these constants in wp-config.php for security
 	//  TODO: Add check if these constants are defined.
 	//        Give default wp-upload values if NOT defined, 
-  //        OR EXIT out of this function  if NOT defined
+        //        OR EXIT out of this function  if NOT defined
 	SH_UPLOADS_FTP_SERVER_DOMAIN_NAME = '/'    // Default: this param need not be defined in wp-config
 
 	$settings = array(
