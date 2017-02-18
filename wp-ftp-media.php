@@ -72,20 +72,20 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 	function ftp_putAll($conn_id, $src_dir, $dst_dir, $created) {
             $d = dir($src_dir);
-	    // do this for each file in the directory
+	    // for each file in the directory..
 	    while($file = $d->read()) {
-		// to prevent an infinite loop
+		// prevent an infinite loop
 	        if ($file != "." && $file != "..") {
-		    // do the following if it is a directory
+		    // if the 'file' it is a directory
 	            if (is_dir($src_dir."/".$file)) { 
 	                if (!@ftp_chdir($conn_id, $dst_dir."/".$file)) {
 			    // create directories that do not yet exist
 	                    ftp_mkdir($conn_id, $dst_dir."/".$file); 
 	                }
-			// recursive part
+			// recurse
 	                $created  = ftp_putAll($conn_id, $src_dir."/".$file, $dst_dir."/".$file, $created); 
 	            } else {
-			// put the files
+			// put the files here
 	                $upload = ftp_put($conn_id, $dst_dir."/".$file, $src_dir."/".$file, FTP_BINARY); 
 	                if($upload)
 	                	$created[] = $src_dir."/".$file;
