@@ -1,15 +1,16 @@
 <?php
 /*
-Plugin Name: Wp-ftp-media-library
+Plugin Name: Wp-ftp-media-library--SH-fork
 Plugin URI: http://wordpress.stackexchange.com/questions/74180/upload-images-to-remote-server
-Description: Let's you upload images to ftp-server and remove the upload on the local machine.
-Version: 0.1
-Author: Pontus Abrahamsson
-Author URI: http://pontusab.se
+Description: Let's you upload images to ftp-server and remove the upload folder from the local machine.
+Version: 0.2
+Author: Sheryl Hohman: v2 define external server constants in wp-config. forked from orig Author: Pontus Abrahamsson; 
+Author URI: http://pontusab.se (original author)
+
 */
 
 /**
- * @version 0.1
+ * @version 0.2
  */
 
 function wpse_74180_upload_to_ftp( $args ) {
@@ -26,10 +27,17 @@ function wpse_74180_upload_to_ftp( $args ) {
 	 */
 	
 	// 170216 SH: Define these constants in wp-config.php for security
-	//  TODO: Add check if these constants are defined.
-	//        Give default wp-upload values if NOT defined, 
-        //        OR EXIT out of this function  if NOT defined
-	SH_UPLOADS_FTP_SERVER_DOMAIN_NAME = '/'    // Default: this param need not be defined in wp-config
+        // EXIT out of this function if any of these constants NOT defined
+	
+	if (!defined(SH_UPLOADS_FTP_SERVER_HOSTNAME) or 
+	   !defined(SH_UPLOADS_FTP_SERVER_PORT) or 
+	   !defined(SH_UPLOADS_FTP_SERVER_USERNAME) or 
+	   !defined(SH_UPLOADS_FTP_SERVER_PASSWORD) or
+	   !defined(SH_UPLOADS_FTP_SERVER_DOMAIN_NAME))
+		exit("constants for external uploads server are undefined");
+	
+	// create default value - this param need not be custom-defined in wp-config
+	defined(SH_UPLOADS_FTP_SERVER_DOMAIN_NAME) or define(SH_UPLOADS_FTP_SERVER_DOMAIN_NAME, '/')
 
 	$settings = array(
 
