@@ -24,15 +24,21 @@ function wpse_74180_upload_to_ftp( $args ) {
 	 * You only need to change the those with (*)
 	 * If marked with (-) its optional 
 	 */
+	
+	// 170216 SH: Define these constants in wp-config.php for security
+	//  TODO: Add check if these constants are defined.
+	//        Give default qp values if NOT defined, OR EXIT out of function if NOT defined
+	SH_UPLOADS_FTP_SERVER_DOMAIN_NAME = '/'    // Default: this param need not be defined in wp-config
 
 	$settings = array(
-		'host'	  =>	'ip or hostname',  		// * the ftp-server hostname
-		'port'    =>    21,                             // * the ftp-server port (of type int)
-		'user'	  =>	'username', 			// * ftp-user
-		'pass'	  =>	'password',	 		// * ftp-password
-		'cdn'     =>    'cdn.example.com',		// * This have to be a pointed domain or subdomain to the root of the uploads
-		'path'	  =>	'/',	 			// - ftp-path, default is root (/). Change here and add the dir on the ftp-server,
-		'base'	  =>    $upload_dir['basedir']  	// Basedir on local 
+		'host'	  =>	SH_UPLOADS_FTP_SERVER_HOSTNAME,     // * the ftp-server hostname, ie:
+		'port'    =>    SH_UPLOADS_FTP_SERVER_PORT,         // * the ftp-server port (of type int), ie: 21
+		'user'	  =>	SH_UPLOADS_FTP_SERVER_USERNAME,     // * ftp-user, ie: 'username'
+		'pass'	  =>	SH_UPLOADS_FTP_SERVER_PASSWORD,	    // * ftp-password, ie: password'
+		'cdn'     =>    SH_UPLOADS_FTP_SERVER_DOMAIN_NAME,  // * domain or subdomain name to the root of the uploads, ie: 'cdn.example.com'
+		'path'	  =>	SH_UPLOADS_FTP_SERVER_FTP_ROOT_PATH,// - ftp-path, default is root ('/'). 
+								    //     Change here, and add the dir on the ftp-server,
+		'base'	  =>    $upload_dir['basedir']  	    // Basedir on local 
 	);
 
 
