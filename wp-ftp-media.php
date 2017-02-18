@@ -13,7 +13,7 @@ Author URI: http://pontusab.se (original author)
  * @version 0.2
  */
 
-function wpse_74180_upload_to_ftp( $args ) {
+function sh_move_uploads_folder_to_external_server( $args ) {
 
 	$upload_dir = wp_upload_dir();
 	$upload_url = get_option('upload_url_path');
@@ -21,8 +21,8 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 
 	/**
-	 * Change this to match your server
-	 * You only need to change the those with (*)
+	 * Define these constants in wp-config.php, to match your uploads server
+	 * You only need to set the those with (*)
 	 * If marked with (-) its optional 
 	 */
 	
@@ -113,7 +113,7 @@ function wpse_74180_upload_to_ftp( $args ) {
 	}
 
 	/**
-	 * If we ftp-upload successfully, mark it for deletion
+	 * If ftp-upload was successfully, mark it for deletion
 	 * http://php.net/manual/en/function.ftp-put.php
 	 */
 	$delete = ftp_putAll($connection, $settings['base'], $settings['path'], array());
@@ -127,4 +127,4 @@ function wpse_74180_upload_to_ftp( $args ) {
 	
 	return $args;
 }
-add_filter( 'wp_generate_attachment_metadata', 'wpse_74180_upload_to_ftp' );
+add_filter( 'wp_generate_attachment_metadata', 'sh_move_uploads_folder_to_external_server' );
