@@ -72,15 +72,21 @@ function wpse_74180_upload_to_ftp( $args ) {
 
 	function ftp_putAll($conn_id, $src_dir, $dst_dir, $created) {
             $d = dir($src_dir);
-	    while($file = $d->read()) { // do this for each file in the directory
-	        if ($file != "." && $file != "..") { // to prevent an infinite loop
-	            if (is_dir($src_dir."/".$file)) { // do the following if it is a directory
+	    // do this for each file in the directory
+	    while($file = $d->read()) {
+		// to prevent an infinite loop
+	        if ($file != "." && $file != "..") {
+		    // do the following if it is a directory
+	            if (is_dir($src_dir."/".$file)) { 
 	                if (!@ftp_chdir($conn_id, $dst_dir."/".$file)) {
-	                    ftp_mkdir($conn_id, $dst_dir."/".$file); // create directories that do not yet exist
+			    // create directories that do not yet exist
+	                    ftp_mkdir($conn_id, $dst_dir."/".$file); 
 	                }
-	                $created  = ftp_putAll($conn_id, $src_dir."/".$file, $dst_dir."/".$file, $created); // recursive part
+			// recursive part
+	                $created  = ftp_putAll($conn_id, $src_dir."/".$file, $dst_dir."/".$file, $created); 
 	            } else {
-	                $upload = ftp_put($conn_id, $dst_dir."/".$file, $src_dir."/".$file, FTP_BINARY); // put the files
+			// put the files
+	                $upload = ftp_put($conn_id, $dst_dir."/".$file, $src_dir."/".$file, FTP_BINARY); 
 	                if($upload)
 	                	$created[] = $src_dir."/".$file;
 	            }
