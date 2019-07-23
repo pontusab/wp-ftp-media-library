@@ -1,0 +1,92 @@
+# Copyright (C) 2019 Pontus Abrahamsson
+# This file is distributed under the same license as the Wp-ftp-media-library plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Wp-ftp-media-library 0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-ftp-media-library\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2019-07-22T14:45:43+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.2.0\n"
+"X-Domain: wfm\n"
+
+#. Plugin Name of the plugin
+msgid "Wp-ftp-media-library"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "http://wordpress.stackexchange.com/questions/74180/upload-images-to-remote-server"
+msgstr ""
+
+#. Description of the plugin
+msgid "Let's you upload images to ftp-server and remove the upload on the local machine."
+msgstr ""
+
+#. Author of the plugin
+msgid "Pontus Abrahamsson"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://pontusab.se"
+msgstr ""
+
+#: fields.php:17
+#: fields.php:20
+msgid "WP FTP Media"
+msgstr ""
+
+#: fields.php:24
+msgid "FTP Host Name"
+msgstr ""
+
+#: fields.php:25
+msgid "The ftp-server hostname, ip or hostname."
+msgstr ""
+
+#: fields.php:29
+msgid "ex: 123.123.123.123 or domain.com"
+msgstr ""
+
+#: fields.php:33
+msgid "FTP Port"
+msgstr ""
+
+#: fields.php:34
+msgid "The ftp-server port (of type int)"
+msgstr ""
+
+#: fields.php:45
+msgid "FTP Username"
+msgstr ""
+
+#: fields.php:46
+msgid "The ftp-user"
+msgstr ""
+
+#: fields.php:51
+msgid "FTP Password"
+msgstr ""
+
+#: fields.php:52
+msgid "The ftp-password"
+msgstr ""
+
+#: fields.php:60
+msgid "FTP Root Path"
+msgstr ""
+
+#: fields.php:61
+msgid "This have to be a pointed domain or subdomain to the root of the uploads"
+msgstr ""
+
+#: fields.php:69
+msgid "FTP Folder Path"
+msgstr ""
+
+#: fields.php:70
+msgid "The ftp-path, default is root (/). Change here and add the dir on the ftp-server"
+msgstr ""
